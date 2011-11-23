@@ -248,7 +248,7 @@ session_start();
   
     <div id="footer-wrapper">
       <div id="footer">
-        Preview IATI Data is free software based on ShowMyPlings code by Ben Webb, you can download the source <a href="">here</a>.
+        Preview IATI Data is free software based on ShowMyPlings code by Ben Webb, you can download the source <a href="https://github.com/caprenter/showmyiatidata">here</a>.
       </div>
     </div>
           

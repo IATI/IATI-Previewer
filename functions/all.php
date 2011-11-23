@@ -12,16 +12,22 @@ function checho($f) {
 
 function print_list($id, $activity, $prefix,$level=0) {
   global $i;
+  $j=0;
    
     $cid = $activity->attributes()->id;
     $cid = $activity->{'iati-identifier'};
+    if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
+      $plus_sign = "- ";
+    } else {
+      $plus_sign = "+";
+    }
     echo "<li>";
         if ($level > 0) {
-            echo "<a id = \"$i\" href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">+</a>";
+            echo "<a id = \"$i\" href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">" . $plus_sign . "</a>";
             echo "<a href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">".ucwords($activity->getName())."</a>: ";
         }
         if ($cid) {
-          echo "<a id = \"$i\" href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">+</a>";
+          echo "<a id = \"$i\" href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">" . $plus_sign . "</a>";
           echo "<span class=\"num\">".$cid."</span> ";
           echo "<a href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">".$activity->title."</a>";
         }
@@ -36,22 +42,27 @@ function print_list($id, $activity, $prefix,$level=0) {
           echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\" style=\"display: none;\">";
         }
         foreach ($activity->children() as $child) {
+          
             if (count($child->children())>0) {
-                $i++;
+                $i++;$j++;
                 print_list($id, $child, $prefix."-".$child->getName(), $level+1);
             }
             else {
                 if ($_SESSION["showblank"] || $child != "") {
-                    echo "<li><span class=\"label\">".ucwords($child->getName())."</span>: ";
+                  if($j&1) { $oddeven = "odd"; } else { $oddeven="even"; } 
+                    echo "<li class=\"" . $oddeven ."\"><div><span class=\"label\">".ucwords($child->getName())."</span>: ";
                       if (count($child->attributes())>0) {
-                        echo " [";
+                        echo "<span class=\"attribute\"> [";
                           foreach($child->attributes() as $a => $b) {
-                              echo $a . '="' . $b . "\"\n";
+                              echo $a . '="' . $b . '"&nbsp;';
                           }
-                        echo "]";
+                        echo "]</span>";
                       }
-                    echo "<br/>" .(string)$child[0];
-                    echo "</li>";
+                    //echo "<br/>"; 
+                    echo "&nbsp;";
+                    echo (string)$child[0];
+                    echo "</div></li>";
+                    $j++;
                 }  
                    
             }

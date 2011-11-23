@@ -168,18 +168,18 @@ session_start();
           <p>Note: This tool cannot open very large files.</p>
         </div>
       </div><!--end Form div-->
-      
+      <div class="content-column-1">
   <?php 
           libxml_use_internal_errors(true); //suppress and save errors
           $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl));
           if (!$activities) {
-            echo '<div class="content-column-1">';
+            //echo '<div class="content-column-1">';
               echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
               //echo "Failed loading XML\n";        
               //foreach(libxml_get_errors() as $error) {
                 //echo "\t", $error->message;
               //}
-            echo '</div>';
+            //echo '</div>';
             //print('<script language="javascript">
             //        toggle(\'urledit\');
             //        toggle(\'edit_link\');
@@ -213,7 +213,7 @@ session_start();
                 echo 'Sorry, no activities were found in this file!<br/>Please <a href="?action=new" title="New Url">try again</a>';
             }
         } 
-      
+      echo "</div>";
   }
   else {
   ?>

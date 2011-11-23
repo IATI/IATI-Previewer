@@ -232,7 +232,7 @@ html								{ border-top: 20px solid #D2D6B6; }
 
 #front-page-content-wrapper 
 #content p 							{margin-right:20px;}
-.content-column-1 { float: left;  margin: 0 40px 0 0;}
+.content-column-1 { float: left;  margin: 0 20px 0 0;}
 
 .featured-container {  margin: 0 0 40px; overflow: hidden; position: relative; }
 .featured-container .content { float: left; width: 300px; }
@@ -957,6 +957,9 @@ margin:0 0 0 10px;
 text-transform:none;
 }
 
+.content-column-1 {
+width:670px;
+}
 .content-column-1 h3 {
 text-transform:none;
 }
@@ -1026,3 +1029,14 @@ li {
 #search input {
 float:right;
 }
+.attribute {
+color:green;
+}
+
+li.odd div {
+background:#ddd;
+/*display:block;*/
+margin:2px 0;
+padding:2px 0;
+}
+

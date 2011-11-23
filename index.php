@@ -60,7 +60,7 @@ session_start();
  
   <div id="header">
 		<div class="header-wrapper">
-      <a class="logo dc_title" href="/">Preview IATI Data</a>
+      <a class="logo dc_title" href="?action=new">Preview IATI Data</a>
 			
       <div class="nav">
         <ul id="menu-primary-navigation" class="menu-main">
@@ -136,54 +136,7 @@ session_start();
       <div class="content-column-1">
 
       </div>
-      <div id="sidebar">
-      <?php
-         echo "<div class=\"refreshed\">Data last refreshed: ";
-                   $filetime_cache = filemtime( "cache/" . nice_file_name($newurl) );
-                   if (date("j") == date("j", $filetime_cache)) {
-                     $day ="Today at ";
-                   } else {
-                     $day = "Yesterday at ";
-                   }
-                   echo $day;
-                   echo date("H:i:s",filemtime( "cache/" . nice_file_name($newurl) )) . "</div>";
-      ?>
-      <h3>Options</h3>
-      <div class="options">
-        <form method="post" action="?action=update">            
-            <div class="sort">
-            Sort by:
-            <select name="sort">
-                <?php
-                    foreach ($sortopts as $key=>$field) {
-                        echo "<option value=\"$key\"";
-                        if ($_SESSION["sort"] == $key) echo " selected ";
-                        echo ">$field</option>";
-                    }
-                ?>
-            </select>
-            <br/>Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
-            </div>
-            
-            <div class="show">
-              <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
-              Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
-              Show expanded: 
-              <ul>
-                <li>Activities<input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
-                <li>Children (transactions etc.)<input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
-              </ul>
-            </div>
-            <div class="submit"><input type="submit" value="update"/></div>
-        </form>
-        </div>
-        <div class="options">
-          <p>This is a preview of a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.<br>
-          The preview function allows you to view the data in the way it was published, without analysing or changing the raw data.</p>
-          <p>You can find out about other tools for accessing IATI-compliant data from a range of sources on the <a href="http://iatiregistry.org/using-iati-data">using IATI data page of the IATI Registry</a>.</p>
-          <p>Note: This tool cannot open very large files.</p>
-        </div>
-      </div><!--end Form div-->
+      
       <div class="content-column-1">
   
   
@@ -236,6 +189,56 @@ session_start();
             }
         } 
       echo "</div>";
+      ?>
+      <div id="sidebar">
+      <?php
+         echo "<div class=\"refreshed\">Data last refreshed: ";
+                   $filetime_cache = filemtime( "cache/" . nice_file_name($newurl) );
+                   if (date("j") == date("j", $filetime_cache)) {
+                     $day ="Today at ";
+                   } else {
+                     $day = "Yesterday at ";
+                   }
+                   echo $day;
+                   echo date("H:i:s",filemtime( "cache/" . nice_file_name($newurl) )) . "</div>";
+      ?>
+      <h3>Options</h3>
+      <div class="options">
+        <form method="post" action="?action=update">            
+            <div class="sort">
+            Sort by:
+            <select name="sort">
+                <?php
+                    foreach ($sortopts as $key=>$field) {
+                        echo "<option value=\"$key\"";
+                        if ($_SESSION["sort"] == $key) echo " selected ";
+                        echo ">$field</option>";
+                    }
+                ?>
+            </select>
+            <br/>Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
+            </div>
+            
+            <div class="show">
+              <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
+              Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
+              Show expanded: 
+              <ul>
+                <li>Activities<input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
+                <li>Children (transactions etc.)<input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
+              </ul>
+            </div>
+            <div class="submit"><input type="submit" value="update"/></div>
+        </form>
+        </div>
+        <div class="options">
+          <p>This is a preview of a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.<br>
+          The preview function allows you to view the data in the way it was published, without analysing or changing the raw data.</p>
+          <p>You can find out about other tools for accessing IATI-compliant data from a range of sources on the <a href="http://iatiregistry.org/using-iati-data">using IATI data page of the IATI Registry</a>.</p>
+          <p>Note: This tool cannot open very large files.</p>
+        </div>
+      </div><!--end Form div-->
+<?php
   }
   else {
   ?>
@@ -255,8 +258,8 @@ session_start();
         Department for International Development, UK<br/>
         <ul>
 
-        <li><a href="http://projects.dfid.gov.uk/iati/Region/380">http://projects.dfid.gov.uk/iati/Region/380</a></li>
-        <li><a href="http://projects.dfid.gov.uk/iati/Country/BD">http://projects.dfid.gov.uk/iati/Country/BD</a></li>
+        <li><a href="index.php?url=http://projects.dfid.gov.uk/iati/Region/380">http://projects.dfid.gov.uk/iati/Region/380</a></li>
+        <li><a href="index.php?url=http://projects.dfid.gov.uk/iati/Country/BD">http://projects.dfid.gov.uk/iati/Country/BD</a></li>
         </ul>
       </div>
           

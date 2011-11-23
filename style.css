@@ -1039,4 +1039,7 @@ background:#ddd;
 margin:2px 0;
 padding:2px 0;
 }
-
+.refreshed {
+font-size:0.8em;
+margin:-8px 0 10px 10px;
+}

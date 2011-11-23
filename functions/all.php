@@ -72,17 +72,20 @@ function print_list($id, $activity, $prefix,$level=0) {
      $i++;
 }
 
-function make_xml_into_array ($xurl, $cacheFile){
+function make_xml_into_array ($xurl, $cacheFile,$freshness){
  
 //depends upon having 'clsParseXML.php' included
 
 //***This is all the collecting the feed, and saving it to a cache file. Uses clsParseXML***//
 //Checks the cached file if less than 'freshness' mins old then check the feed and re-populate the cache with fresh data
-$freshness = 720;
+if ($freshness == FALSE) {
+  $freshness = 720;
+} 
+//echo $freshness;
 $seconds = (60*$freshness);
 
 //if ( filemtime( "cache/cache_plingstoday.txt" ) < (time()-$seconds) ) {
-if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime( $cacheFile == FALSE)) {
+if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FALSE) {
 
     //Overide xml variable for now
     //$xml_plings = 'http://feeds.plings.net/xml.activity.php/1/la/00BS';
@@ -122,7 +125,7 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime( $cacheFile == FAL
 	         $cache = fopen ( $cacheFile, "w" );
 		       fwrite( $cache, $output );
 		       fclose( $cache );
-		
+            
         } //end 'if response code =200 - ie. we've refreshed the data in the cache
       
         else {
@@ -131,7 +134,7 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime( $cacheFile == FAL
       } //end if output empty else..
   } //end of 'if cache file is too old then refresh it'
 
-
+  
 //Start buliding the output
 //Always bulid the page from the cache - fresh data is written to the cache first.
 

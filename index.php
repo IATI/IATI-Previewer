@@ -14,6 +14,8 @@ include "functions/all.php";
 $sort_terms = array("title", "iati-identifier");
 $sortopts = array(" "=>"Default","title"=>"Title","iati-identifier"=>"IATI ID");
 
+$freshness = FALSE;
+
 session_start();
 ?>
 <html>
@@ -66,7 +68,7 @@ session_start();
             <a href="?action=new" title="New Url">New Data</a>
           </li>
           <li id="menu-item-2" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1478">
-            <a href="index.php" title="Refresh">Refresh</a>
+            <a href="?action=refresh" title="Refresh">Refresh</a>
           </li>
         </ul>
       </div>
@@ -95,8 +97,7 @@ session_start();
           $_SESSION["url"] = "";
           $_SESSION["apikey"] = "";
           $_SESSION["showblank"] = TRUE;
-      }
-      elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
+      }  elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
           
          if (in_array($_REQUEST["sort"], $sort_terms)) {
               $_SESSION["sort"] = $_REQUEST["sort"];
@@ -107,11 +108,15 @@ session_start();
               }
           } else {
             $_SESSION["sort"] = "";
+            $_SESSION["sort_order"] = "";
           }
           foreach (array("actvis","cvis","showblank","sort_group","times") as $f) {
             if (isset($_REQUEST[$f]) && $_REQUEST[$f] == "on") $_SESSION[$f] = true;
               else $_SESSION[$f] = false;
           }
+      } elseif (isset($_GET["action"]) && $_GET["action"] == "refresh") {
+        $freshness = 1/60; //we refrech the cache
+        //echo $freshness;
       }
       if (isset($_REQUEST["url"]) && $_REQUEST["url"]) {
         $url = htmlentities($_REQUEST["url"]);
@@ -132,6 +137,17 @@ session_start();
 
       </div>
       <div id="sidebar">
+      <?php
+         echo "<div class=\"refreshed\">Data last refreshed: ";
+                   $filetime_cache = filemtime( "cache/" . nice_file_name($newurl) );
+                   if (date("j") == date("j", $filetime_cache)) {
+                     $day ="Today at ";
+                   } else {
+                     $day = "Yesterday at ";
+                   }
+                   echo $day;
+                   echo date("H:i:s",filemtime( "cache/" . nice_file_name($newurl) )) . "</div>";
+      ?>
       <h3>Options</h3>
       <div class="options">
         <form method="post" action="?action=update">            
@@ -169,9 +185,13 @@ session_start();
         </div>
       </div><!--end Form div-->
       <div class="content-column-1">
+  
+  
+  
+  
   <?php 
           libxml_use_internal_errors(true); //suppress and save errors
-          $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl));
+          $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl),$freshness);
           if (!$activities) {
             //echo '<div class="content-column-1">';
               echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
@@ -196,7 +216,9 @@ session_start();
                 echo "<ul>";
                    $header = safeurl($newurl);
                    $header .= "<br/>This file has " .$count. " activities";
+                   
                    echo "<li><h3>".$header."</h3>";
+                
                    echo "<p>Use the expand (+) and collapse (-) buttons to view and hide the details </p>";
                    echo "</li><ul class=\"actinfo\">";
                 $i = 0;
@@ -248,7 +270,7 @@ session_start();
   
     <div id="footer-wrapper">
       <div id="footer">
-        Preview IATI Data is free software based on ShowMyPlings code by Ben Webb, you can download the source <a href="https://github.com/caprenter/showmyiatidata">here</a>.
+        Preview IATI Data is free software. You can download the source <a href="https://github.com/caprenter/showmyiatidata">here</a>.
       </div>
     </div>
           

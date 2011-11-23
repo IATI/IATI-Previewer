@@ -73,7 +73,7 @@ html { overflow-y: scroll; }
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
 
-ul, ol { margin-left: 2em; }
+ul, ol { margin-left: 0; }
 ol { list-style-type: decimal; }
 
 /* Remove margins for navigation lists */
@@ -943,6 +943,7 @@ display:block;
 }
 #header a.logo {
 width:463px;
+background:url("img/showmydata_logo.png") no-repeat scroll 320px 0 transparent;
 }
 select {
 margin:0;
@@ -960,6 +961,9 @@ text-transform:none;
 text-transform:none;
 }
 
+#main h3 {
+text-transform:none;
+}
 .options {
 border:1px solid;
 margin:10px;
@@ -975,12 +979,12 @@ margin-top:20px;
 .exp {
     font-weight: bold;
 }
-li, ul, h3 {
+/*li, ul, h3 {
 	margin: 0;
 	padding: 0;
 	border: 0;
 	outline: 0;
-}
+}*/
 ul .actinfo {
     border-left: 1px solid black;
     margin-left: 0.5em;

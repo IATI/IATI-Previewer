@@ -7,91 +7,43 @@
 # see the LICENSE file for details.
 error_reporting(0);
 $i =0;
-$newurl = ("data/WB/WB_AR.xml");
-include "sort.php";
-//$sort_terms = array("title", "VenueName", "ProviderName", "cost", "la", "ward");
-//$sortopts = array(" "=>"Default","title"=>"Title","VenueName"=>"Venue Name","ProviderName"=>"Provider Name","cost"=>"Cost","la"=>"LA","ward"=>"Ward");
+
+include "functions/sort.php";
+include "functions/all.php";
+
 $sort_terms = array("title", "iati-identifier");
 $sortopts = array(" "=>"Default","title"=>"Title","iati-identifier"=>"IATI ID");
-//$paramform = array("Max Results"=>"MaxResults","Page"=>"Page","Start Date (yyyy-mm-dd)"=>"searchDate","Day"=>"onday");
-
-function safeurl($url) {
-    if ($pos = strpos($url,"?APIKey=")) {
-        return substr($url,0,$pos+17)."...".substr($url,$pos+43);
-    }
-    else return $url;
-}
-
-function checho($f) {
-                if ($_SESSION[$f]) echo checked; 
-}
-
-function print_list($id, $activity, $prefix,$level=0) {
-  global $i;
-   
-    $cid = $activity->attributes()->id;
-    $cid = $activity->{'iati-identifier'};
-    echo "<li>";
-        if ($level > 0)
-            echo "<a href=\"javascript:toggle('$prefix-$id-$i')\" class=\"exp\">".ucwords($activity->getName())."</a>: ";
-        if ($cid) {
-          echo "<span class=\"num\">".$cid."</span> ";
-          echo "<a href=\"javascript:toggle('$prefix-$id-$i')\" class=\"exp\">".$activity->title."</a>";
-        }
-        //if ($level==0 && $_SESSION["times"] !== false) {
-        //    if ($_SESSION["sort_group"] === FALSE || $_SESSION["sort"]) $format = "d/m/Y H:i";
-        //    else $format = "H:i";
-        //    echo " <span class=\"time\">(".date($format, strtotime((string)$activity->Starts))." - ".date($format, strtotime((string)$activity->Ends)).")</span> ";
-        //}
-        if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
-          echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\">";
-        } else {
-          echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\" style=\"display: none;\">";
-        }
-        foreach ($activity->children() as $child) {
-            if (count($child->children())>0) {
-                print_list($id, $child, $prefix."-".$child->getName(), $level+1);
-            }
-            else {
-                if ($_SESSION["showblank"] || $child != "") {
-                    echo "<li><span class=\"label\">".ucwords($child->getName())."</span>: ";
-                      if (count($child->attributes())>0) {
-                        echo " [";
-                          foreach($child->attributes() as $a => $b) {
-                              echo $a . '="' . $b . "\"\n";
-                          }
-                        echo "]";
-                      }
-                    echo "<br/>" .(string)$child[0];
-                    echo "</li>";
-                }  
-                   
-            }
-        }
-        echo "</ul>";
-    echo "</li>";
-     $i++;
-}
 
 session_start();
 ?>
 <html>
 <head>
-  <title>Show My IATI Data</title>
+  <title>Preview IATI Data</title>
   <link rel="stylesheet" href="style.css" type="text/css" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
-	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <!--Thanks to http://www.randomsnippets.com/2008/02/12/how-to-hide-and-show-your-div/-->
   <script language="javascript">
-        function toggle(elem) {
-            if (document.getElementById(elem).style.display == 'none') document.getElementById(elem).style.display = '';
-            else document.getElementById(elem).style.display = 'none';
-        }
+    function toggle2(showHide, switchText) {
+	    var ele = document.getElementById(showHide);
+	    var text = document.getElementById(switchText);
+	    if(ele.style.display == "") {
+        		ele.style.display = "none";
+		    text.innerHTML = "+";
+      	}
+	    else {
+		    ele.style.display = "";
+		    text.innerHTML = "- ";
+	    }
+    }
   </script>
+  
   <style><!-- 
     SPAN.searchword { background-color:yellow; }
     // -->
-</style>
-<script src="http://links.tedpavlic.com/js/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>
+  </style>
+  <!--<script src="http://links.tedpavlic.com/js/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>-->
+   <script src="javascript/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>
 </head>
 <body onload="highlightSearchTerms('search');">
 <div id="sitewrapper">
@@ -106,10 +58,9 @@ session_start();
  
   <div id="header">
 		<div class="header-wrapper">
-          <!--<a class="logo ir" href="/">Show My IATI Data</a>-->
-          <a class="logo dc_title" href="/">Show My IATI Data</a>
+      <a class="logo dc_title" href="/">Preview IATI Data</a>
 			
-			<div class="nav">
+      <div class="nav">
         <ul id="menu-primary-navigation" class="menu-main">
           <li id="menu-item-3" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1482">
             <a href="?action=new" title="New Url">New Data</a>
@@ -117,7 +68,6 @@ session_start();
           <li id="menu-item-2" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1478">
             <a href="index.php" title="Refresh">Refresh</a>
           </li>
-          
         </ul>
       </div>
       
@@ -130,17 +80,8 @@ session_start();
             <input type="button" value="Highlight" onclick="localSearchHighlight(document.searchhi.h.value); 
                                                              document.searchhi.reset(); document.searchhi.h.focus();" />
           </div>
-      </form>
-
-			<!--<form method="get" id="searchform" action="http://iatistandard.org/">
-
-				<div id="search">
-					<input value="Enter search keyword" onclick="this.value='';" name="s" id="s" type="text">
-					<input name="" src="http://iatistandard.org/wp-content/themes/freshnews3/images/btn-search-trans.png" value="Go" class="btn" type="image">
-				</div><!--/search -->  
-			<!--</form>--><!-- #searchform -->
+      </form><!-- #searchform -->
 			
-						
 			<div class="fix"></div>
 
 		</div><!-- .header-wrapper -->
@@ -156,19 +97,17 @@ session_start();
           $_SESSION["showblank"] = TRUE;
       }
       elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
-         // if ($_REQUEST["days"] !== FALSE) $_SESSION["days"] = $_REQUEST["days"];
-         // foreach($paramform as $key=>$field) {
-          //    $_SESSION["pparams"][$field] = $_REQUEST[$field];
-         // }
           
          if (in_array($_REQUEST["sort"], $sort_terms)) {
               $_SESSION["sort"] = $_REQUEST["sort"];
-              if (isset($_REQUEST["sort_order"]) && $_REQUEST["sort_order"] == "on")
+              if (isset($_REQUEST["sort_order"]) && $_REQUEST["sort_order"] == "on") {
                   $_SESSION["sort_order"] = "desc";
-             else
+              } else {
                  $_SESSION["sort_order"] = "asc";
-         }
-          else $_SESSION["sort"] = "";
+              }
+          } else {
+            $_SESSION["sort"] = "";
+          }
           foreach (array("actvis","cvis","showblank","sort_group","times") as $f) {
             if (isset($_REQUEST[$f]) && $_REQUEST[$f] == "on") $_SESSION[$f] = true;
               else $_SESSION[$f] = false;
@@ -185,39 +124,17 @@ session_start();
         //}
       }
       if ($url) {
-          //$bit = split("http://feeds.plings.net/xml.activity.php/",$url);
-          //if ($bit && count($bit)==2 && $bit[0]=="") {
-
-              $newurl = $url;
-              $_SESSION["url"] = $newurl;
+        $newurl = $url;
+        $_SESSION["url"] = $newurl;
               
     ?>
       <div class="content-column-1">
-        <div class="url">
-          <h3>Current URL: <?php if(safeurl($newurl) == "") { echo 'none'; } else { echo safeurl($newurl); } ?></h3> <a id="edit_link" href="javascript:toggle('urledit')">edit</a>
-        </div>
-        <div id="urledit" style="display: none;">
-          <form method="post" action="index.php">
-            <input type="text" name="url" size="80" value="<?php echo $newurl; ?>" />
-            <input type="submit" value="Submit" />
-          </form>
-        </div>
+
       </div>
       <div id="sidebar">
       <h3>Options</h3>
       <div class="options">
-        <form method="post" action="?action=update">
-            <!--<div class="days">
-            Days: 
-            <select name="days">
-                <?php/* foreach(array(0,1,2,3,4,5,6,7,14,30,60,90,120) as $i) {
-                    echo "<option value=\"$i\"";
-                    if ($_SESSION["days"] == $i) echo " selected ";
-                    echo ">$i</option>";
-                } */?>
-            </select>
-            </div>-->
-            
+        <form method="post" action="?action=update">            
             <div class="sort">
             Sort by:
             <select name="sort">
@@ -230,17 +147,7 @@ session_start();
                 ?>
             </select>
             <br/>Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
-            <!--Group<input type="checkbox" name="sort_group" <?php //if ($_SESSION["sort_group"] !== false) echo "checked"; ?>>-->
             </div>
-            
-            <!--<div class="params">
-            <?php /*foreach($paramform as $key=>$field) {
-                if ($field=="onday" || $field=="searchDate") $size = 7;
-                else $size=4;
-                echo $key.": <input type=\"text\" name=\"".$field."\" size=\"".$size."\" value=\"".$_SESSION["pparams"][$field]."\"/> ";
-            } */?>
-            <br/>
-            </div>-->
             
             <div class="show">
               <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
@@ -254,68 +161,48 @@ session_start();
             <div class="submit"><input type="submit" value="update"/></div>
         </form>
         </div>
+        <div class="options">
+          <p>This is a preview of a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.<br>
+          The preview function allows you to view the data in the way it was published, without analysing or changing the raw data.</p>
+          <p>You can find out about other tools for accessing IATI-compliant data from a range of sources on the <a href="http://iatiregistry.org/using-iati-data">using IATI data page of the IATI Registry</a>.</p>
+          <p>Note: This tool cannot open very large files.</p>
+        </div>
       </div><!--end Form div-->
       
   <?php 
           libxml_use_internal_errors(true); //suppress and save errors
-          $activities = simplexml_load_file($newurl); 
+          $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl));
           if (!$activities) {
-            echo '<div class="content-column-1 errors">';
-              echo "Sorry, could not get IATA compliant data from the supplied file!<br/>";
-              echo "Failed loading XML\n";        
-              foreach(libxml_get_errors() as $error) {
-                echo "\t", $error->message;
-              }
+            echo '<div class="content-column-1">';
+              echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
+              //echo "Failed loading XML\n";        
+              //foreach(libxml_get_errors() as $error) {
+                //echo "\t", $error->message;
+              //}
             echo '</div>';
-            print('<script language="javascript">
-                    toggle(\'urledit\');
-                    toggle(\'edit_link\');
-                </script>');
+            //print('<script language="javascript">
+            //        toggle(\'urledit\');
+            //        toggle(\'edit_link\');
+             //   </script>');
             //$_SESSION["url"] = "";
   
           } else {
-            //print_r($xml);
-           // echo "<div>";
-           // foreach ($xml->queryDetails->children() as $child) {
-           //     if ((string)$child) echo $child->getName().": ".$child."<br/>";
-           // }
-           // echo "</div>";
-            
+           //$count = $xml->count(); //php >5.3
+           $count = count($activities->children()); //php < 5.3
             if ($_SESSION["sort"]) {
                 $activities = sort_plings_xml($activities,$_SESSION["sort"],$_SESSION["sort_order"]);
             }
             if ($activities) {
-             // echo'yes';
-                echo "<ul><ul>";
-                if ($_SESSION["sort_group"] === false) echo "</ul><li><h3>Results:</h3></li><ul class=\"actinfo\">";
-                $oheader = "";
+                echo "<ul>";
+                   $header = safeurl($newurl);
+                   $header .= "<br/>This file has " .$count. " activities";
+                   echo "<li><h3>".$header."</h3>";
+                   echo "<p>Use the expand (+) and collapse (-) buttons to view and hide the details </p>";
+                   echo "</li><ul class=\"actinfo\">";
                 $i = 0;
                 foreach($activities as $activity) {
                   //print_r($activity);
                     $id = $activity->{'iati-identifier'};
-                    //echo $id;
-                    if ($_SESSION["sort_group"] !== false) {
-                        if (!$_SESSION["sort"]) {
-                            $header = date("l, jS F Y", strtotime($activity->Starts));
-                            $header = $newurl;
-                        } elseif ($_SESSION["sort"] == "title") {
-                            $header = (string)$activity->title;
-                       /* } elseif ($_SESSION["sort"] == "VenueName") {
-                            $header = (string)$activity->venue->Name;
-                        } elseif ($_SESSION["sort"] == "ProviderName") {
-                            $header = (string)$activity->provider->Name;
-                        } elseif ($_SESSION["sort"] == "cost") {
-                            $header = (string)$activity->Cost;
-                        } elseif ($_SESSION["sort"] == "la") {
-                            $header = (string)$activity->venue->LAName." (".$activity->venue->LA.")";
-                        } elseif ($_SESSION["sort"] == "ward") {
-                            $header = (string)$activity->venue->WardName." (".$activity->venue->Ward.")";*/
-                        }
-                        if ($header != $oheader) {
-                            echo "</ul><li><h3>".$header."</h3></li><ul class=\"actinfo\">";
-                            $oheader = $header;
-                        }
-                    }
                     print_list($id, $activity, "actinfo");
                     $i++;
                 }
@@ -323,7 +210,7 @@ session_start();
                 #echo $i;
             }
             else {
-                echo "Sorry, no activities were found in this file!";
+                echo 'Sorry, no activities were found in this file!<br/>Please <a href="?action=new" title="New Url">try again</a>';
             }
         } 
       
@@ -361,7 +248,7 @@ session_start();
   
     <div id="footer-wrapper">
       <div id="footer">
-        Show My IATI Data is free software based on ShowMyPlings code by Ben Webb, you can download the source <a href="">here</a>.
+        Preview IATI Data is free software based on ShowMyPlings code by Ben Webb, you can download the source <a href="">here</a>.
       </div>
     </div>
           

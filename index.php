@@ -18,14 +18,16 @@ $freshness = FALSE;
 
 session_start();
 ?>
-<html>
-<head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Preview IATI Data</title>
   <link rel="stylesheet" href="style.css" type="text/css" />
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
   <!--Thanks to http://www.randomsnippets.com/2008/02/12/how-to-hide-and-show-your-div/-->
-  <script language="javascript">
+  <script type="text/javascript">
     function toggle2(showHide, switchText) {
 	    var ele = document.getElementById(showHide);
 	    var text = document.getElementById(switchText);
@@ -40,12 +42,12 @@ session_start();
     }
   </script>
   
-  <style><!-- 
+  <style type="text/css"><!-- 
     SPAN.searchword { background-color:yellow; }
     // -->
   </style>
   <!--<script src="http://links.tedpavlic.com/js/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>-->
-   <script src="javascript/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>
+   <script src="javascript/searchhi_slim.js" type="text/javascript"></script>
 </head>
 <body onload="highlightSearchTerms('search');">
 <div id="sitewrapper">
@@ -73,7 +75,7 @@ session_start();
         </ul>
       </div>
       
-      <form id="searchform" name="searchhi" action="" onSubmit="localSearchHighlight(document.searchhi.h.value); 
+      <form id="searchform" name="searchhi" action="" onsubmit="localSearchHighlight(document.searchhi.h.value); 
                                                         document.searchhi.reset(); document.searchhi.h.focus(); return false;">
           <div id="search">
             <p>Search: <input name="h" value="" /></p>
@@ -91,153 +93,153 @@ session_start();
   
   <div id="page-content">
     <div id="wrapper">
-    <div id="main">
-    <?php
-      if (isset($_GET["action"]) && $_GET["action"] == "new") {
-          $_SESSION["url"] = "";
-          $_SESSION["apikey"] = "";
-          $_SESSION["showblank"] = TRUE;
-      }  elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
-          
-         if (in_array($_REQUEST["sort"], $sort_terms)) {
-              $_SESSION["sort"] = $_REQUEST["sort"];
-              if (isset($_REQUEST["sort_order"]) && $_REQUEST["sort_order"] == "on") {
-                  $_SESSION["sort_order"] = "desc";
-              } else {
-                 $_SESSION["sort_order"] = "asc";
-              }
-          } else {
-            $_SESSION["sort"] = "";
-            $_SESSION["sort_order"] = "";
-          }
-          foreach (array("actvis","cvis","showblank","sort_group","times") as $f) {
-            if (isset($_REQUEST[$f]) && $_REQUEST[$f] == "on") $_SESSION[$f] = true;
-              else $_SESSION[$f] = false;
-          }
-      } elseif (isset($_GET["action"]) && $_GET["action"] == "refresh") {
-        $freshness = 1/60; //we refrech the cache
-        //echo $freshness;
-      }
-      if (isset($_REQUEST["url"]) && $_REQUEST["url"]) {
-        $url = htmlentities($_REQUEST["url"]);
-      } else {
-        //if (isset($_SESSION["url"])) {
-         $url = htmlentities($_SESSION["url"]);
-        //} else {
-         // $url = "";
-         // $_SESSION["url"] = "";
-        //}
-      }
-      if ($url) {
-        $newurl = $url;
-        $_SESSION["url"] = $newurl;
+      <div id="main">
+        <?php
+          if (isset($_GET["action"]) && $_GET["action"] == "new") {
+              $_SESSION["url"] = "";
+              $_SESSION["apikey"] = "";
+              $_SESSION["showblank"] = TRUE;
+          }  elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
               
-    ?>
-      <div class="content-column-1">
-
-      </div>
-      
-      <div class="content-column-1">
-  
-  
-  
-  
-  <?php 
-          libxml_use_internal_errors(true); //suppress and save errors
-          $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl),$freshness);
-          if (!$activities) {
-            //echo '<div class="content-column-1">';
-              echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
-              //echo "Failed loading XML\n";        
-              //foreach(libxml_get_errors() as $error) {
-                //echo "\t", $error->message;
-              //}
-            //echo '</div>';
-            //print('<script language="javascript">
-            //        toggle(\'urledit\');
-            //        toggle(\'edit_link\');
-             //   </script>');
-            //$_SESSION["url"] = "";
-  
+             if (in_array($_REQUEST["sort"], $sort_terms)) {
+                  $_SESSION["sort"] = $_REQUEST["sort"];
+                  if (isset($_REQUEST["sort_order"]) && $_REQUEST["sort_order"] == "on") {
+                      $_SESSION["sort_order"] = "desc";
+                  } else {
+                     $_SESSION["sort_order"] = "asc";
+                  }
+              } else {
+                $_SESSION["sort"] = "";
+                $_SESSION["sort_order"] = "";
+              }
+              foreach (array("actvis","cvis","showblank","sort_group","times") as $f) {
+                if (isset($_REQUEST[$f]) && $_REQUEST[$f] == "on") $_SESSION[$f] = true;
+                  else $_SESSION[$f] = false;
+              }
+          } elseif (isset($_GET["action"]) && $_GET["action"] == "refresh") {
+            $freshness = 1/60; //we refrech the cache
+            //echo $freshness;
+          }
+          if (isset($_REQUEST["url"]) && $_REQUEST["url"]) {
+            $url = htmlentities($_REQUEST["url"]);
           } else {
-           //$count = $xml->count(); //php >5.3
-           $count = count($activities->children()); //php < 5.3
-            if ($_SESSION["sort"]) {
-                $activities = sort_plings_xml($activities,$_SESSION["sort"],$_SESSION["sort_order"]);
-            }
-            if ($activities) {
-                echo "<ul>";
-                   $header = safeurl($newurl);
-                   $header .= "<br/>This file has " .$count. " activities";
-                   
-                   echo "<li><h3>".$header."</h3>";
-                
-                   echo "<p>Use the expand (+) and collapse (-) buttons to view and hide the details </p>";
-                   echo "</li><ul class=\"actinfo\">";
-                $i = 0;
-                foreach($activities as $activity) {
-                  //print_r($activity);
-                    $id = $activity->{'iati-identifier'};
-                    print_list($id, $activity, "actinfo");
-                    $i++;
+            //if (isset($_SESSION["url"])) {
+             $url = htmlentities($_SESSION["url"]);
+            //} else {
+             // $url = "";
+             // $_SESSION["url"] = "";
+            //}
+          }
+          if ($url) {
+            $newurl = $url;
+            $_SESSION["url"] = $newurl;
+                  
+        ?>
+          <div class="content-column-1">
+
+          </div>
+          
+          <div class="content-column-1">
+      
+      
+      
+      
+      <?php 
+              libxml_use_internal_errors(true); //suppress and save errors
+              $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl),$freshness);
+              if (!$activities) {
+                //echo '<div class="content-column-1">';
+                  echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
+                  //echo "Failed loading XML\n";        
+                  //foreach(libxml_get_errors() as $error) {
+                    //echo "\t", $error->message;
+                  //}
+                //echo '</div>';
+                //print('<script language="javascript">
+                //        toggle(\'urledit\');
+                //        toggle(\'edit_link\');
+                 //   </script>');
+                //$_SESSION["url"] = "";
+      
+              } else {
+               //$count = $xml->count(); //php >5.3
+               $count = count($activities->children()); //php < 5.3
+                if ($_SESSION["sort"]) {
+                    $activities = sort_plings_xml($activities,$_SESSION["sort"],$_SESSION["sort_order"]);
                 }
-                echo "</ul></ul>";
-                #echo $i;
-            }
-            else {
-                echo 'Sorry, no activities were found in this file!<br/>Please <a href="?action=new" title="New Url">try again</a>';
-            }
-        } 
-      echo "</div>";
-      ?>
-      <div id="sidebar">
-      <?php
-         echo "<div class=\"refreshed\">Data last refreshed: ";
-                   $filetime_cache = filemtime( "cache/" . nice_file_name($newurl) );
-                   if (date("j") == date("j", $filetime_cache)) {
-                     $day ="Today at ";
-                   } else {
-                     $day = "Yesterday at ";
-                   }
-                   echo $day;
-                   echo date("H:i:s",filemtime( "cache/" . nice_file_name($newurl) )) . "</div>";
-      ?>
-      <h3>Options</h3>
-      <div class="options">
-        <form method="post" action="?action=update">            
-            <div class="sort">
-            Sort by:
-            <select name="sort">
-                <?php
-                    foreach ($sortopts as $key=>$field) {
-                        echo "<option value=\"$key\"";
-                        if ($_SESSION["sort"] == $key) echo " selected ";
-                        echo ">$field</option>";
+                if ($activities) {
+                    echo "<ul>";
+                       $header = safeurl($newurl);
+                       $header .= "<br/>This file has " .$count. " activities";
+                       
+                       echo "<li><h3>".$header."</h3>";
+                    
+                       echo "<p>Use the expand (+) and collapse (-) buttons to view and hide the details </p>";
+                       echo "</li><ul class=\"actinfo\">";
+                    $i = 0;
+                    foreach($activities as $activity) {
+                      //print_r($activity);
+                        $id = $activity->{'iati-identifier'};
+                        print_list($id, $activity, "actinfo");
+                        $i++;
                     }
-                ?>
-            </select>
-            <br/>Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
+                    echo "</ul></ul>";
+                    #echo $i;
+                }
+                else {
+                    echo 'Sorry, no activities were found in this file!<br/>Please <a href="?action=new" title="New Url">try again</a>';
+                }
+            } 
+          echo "</div>";
+          ?>
+          <div id="sidebar">
+            <?php
+               echo "<div class=\"refreshed\">Data last refreshed: ";
+                         $filetime_cache = filemtime( "cache/" . nice_file_name($newurl) );
+                         if (date("j") == date("j", $filetime_cache)) {
+                           $day ="Today at ";
+                         } else {
+                           $day = "Yesterday at ";
+                         }
+                         echo $day;
+                         echo date("H:i:s",filemtime( "cache/" . nice_file_name($newurl) )) . "</div>";
+            ?>
+            <h3>Options</h3>
+            <div class="options">
+              <form method="post" action="?action=update">            
+                  <div class="sort">
+                    Sort by:
+                    <select name="sort">
+                        <?php
+                            foreach ($sortopts as $key=>$field) {
+                                echo "<option value=\"$key\"";
+                                if ($_SESSION["sort"] == $key) echo " selected ";
+                                echo ">$field</option>";
+                            }
+                        ?>
+                    </select>
+                    <br/>Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
+                  </div>
+                  
+                  <div class="show">
+                    <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
+                    Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
+                    Show expanded: 
+                    <ul>
+                      <li>Activities<input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
+                      <li>Children (transactions etc.)<input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
+                    </ul>
+                  </div>
+                  <div class="submit"><input type="submit" value="update"/></div>
+              </form>
             </div>
-            
-            <div class="show">
-              <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
-              Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
-              Show expanded: 
-              <ul>
-                <li>Activities<input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
-                <li>Children (transactions etc.)<input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
-              </ul>
+            <div class="options">
+              <p>This is a preview of a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.<br>
+              The preview function allows you to view the data in the way it was published, without analysing or changing the raw data.</p>
+              <p>You can find out about other tools for accessing IATI-compliant data from a range of sources on the <a href="http://iatiregistry.org/using-iati-data">using IATI data page of the IATI Registry</a>.</p>
+              <p>Note: This tool cannot open very large files.</p>
             </div>
-            <div class="submit"><input type="submit" value="update"/></div>
-        </form>
-        </div>
-        <div class="options">
-          <p>This is a preview of a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.<br>
-          The preview function allows you to view the data in the way it was published, without analysing or changing the raw data.</p>
-          <p>You can find out about other tools for accessing IATI-compliant data from a range of sources on the <a href="http://iatiregistry.org/using-iati-data">using IATI data page of the IATI Registry</a>.</p>
-          <p>Note: This tool cannot open very large files.</p>
-        </div>
-      </div><!--end Form div-->
+          </div><!--endSidebar-->
 <?php
   }
   else {
@@ -266,17 +268,15 @@ session_start();
 
           <!--<div class="footer"><img src="logo.png" /></div>-->
   <?php } ?>
-          </div>
-      </div>
-  </div><!--wrapper-->
-  </div>
+          </div><!--main-->
+      </div><!--wrapper-->
+  </div><!--page-content-->
+  </div><!--site wrapper-->
   
     <div id="footer-wrapper">
       <div id="footer">
         Preview IATI Data is free software. You can download the source <a href="https://github.com/caprenter/showmyiatidata">here</a>.
       </div>
     </div>
-          
-  </div><!--site wrapper-->
 </body>
 </html>

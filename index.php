@@ -17,6 +17,9 @@ $sortopts = array(" "=>"Default","title"=>"Title","iati-identifier"=>"IATI ID");
 $freshness = FALSE;
 
 session_start();
+if (!isset($_REQUEST["showblank"])) {
+  $_SESSION["showblank"] = TRUE;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
@@ -98,7 +101,7 @@ session_start();
           if (isset($_GET["action"]) && $_GET["action"] == "new") {
               $_SESSION["url"] = "";
               $_SESSION["apikey"] = "";
-              $_SESSION["showblank"] = TRUE;
+              
           }  elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
               
              if (in_array($_REQUEST["sort"], $sort_terms)) {

@@ -13,9 +13,13 @@ function checho($f) {
 function print_list($id, $activity, $prefix,$level=0) {
   global $i;
   $j=0;
-   
+    $id = trim($id); //the id is used in the javascript toggle and won't like additonal spaces in it
     $cid = $activity->attributes()->id;
     $cid = $activity->{'iati-identifier'};
+    //For organisation files. If iati-identifier is missing use name instead
+    if (!$cid) {
+      $cid = $activity->{'name'};
+    }
     if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
       $plus_sign = "- ";
     } else {
@@ -25,6 +29,14 @@ function print_list($id, $activity, $prefix,$level=0) {
         if ($level > 0) {
             echo "<a id = \"$i\" href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">" . $plus_sign . "</a>";
             echo "<a href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">".ucwords($activity->getName())."</a>: ";
+            //Display any attributes that the top level element in this list may have. Organisation files only I think
+            if (count($activity->attributes())>0) {
+              echo "<span class=\"attribute\"> [";
+                foreach($activity->attributes() as $a => $b) {
+                    echo $a . '="' . $b . '"&nbsp;';
+                }
+              echo "]</span>";
+            }
         }
         if ($cid) {
           echo "<a id = \"$i\" href=\"javascript:toggle2('$prefix-$id-$i','$i')\" class=\"exp\">" . $plus_sign . "</a>";
@@ -140,7 +152,11 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FAL
 
 	//$cache = file_get_contents( $cacheFile );
 	//print_r ($xml);
-		$xml = simplexml_load_file($cacheFile);
+    //if (filesize($cacheFile)< 20000000000000 ) {
+      $xml = simplexml_load_file($cacheFile);
+    //} else {
+      //$xml = FALSE;
+    //}
 	//print_r ($xml);
 
 //***Now we have an array with all the XML data in it.

@@ -114,6 +114,8 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FAL
     curl_setopt($ch, CURLOPT_URL, $xml_url);
     curl_setopt($ch,CURLOPT_TIMEOUT,30);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //Follow re-directs:
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
     // grab URL and pass it to the browser - as CURLOPT_RETURNTRANSFER is set, it returns the page
     //if true. Returns false if not valid

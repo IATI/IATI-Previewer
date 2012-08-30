@@ -18,7 +18,7 @@ $freshness = FALSE;
 
 session_start();
 if (!isset($_REQUEST["showblank"])) {
-  $_SESSION["showblank"] = TRUE;
+ $_SESSION["showblank"] = TRUE;
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -101,7 +101,7 @@ if (!isset($_REQUEST["showblank"])) {
           if (isset($_GET["action"]) && $_GET["action"] == "new") {
               $_SESSION["url"] = "";
               $_SESSION["apikey"] = "";
-              
+              $_SESSION["showblank"] = TRUE;
           }  elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
               
              if (in_array($_REQUEST["sort"], $sort_terms)) {
@@ -117,7 +117,7 @@ if (!isset($_REQUEST["showblank"])) {
               }
               foreach (array("actvis","cvis","showblank","sort_group","times") as $f) {
                 if (isset($_REQUEST[$f]) && $_REQUEST[$f] == "on") $_SESSION[$f] = true;
-                  else $_SESSION[$f] = false;
+                  else $_SESSION[$f] = ($f == "showblank") ? "true" : false;
               }
           } elseif (isset($_GET["action"]) && $_GET["action"] == "refresh") {
             $freshness = 1/60; //we refrech the cache
@@ -149,7 +149,7 @@ if (!isset($_REQUEST["showblank"])) {
       
       <?php 
               libxml_use_internal_errors(true); //suppress and save errors
-              $activities = make_xml_into_array ($newurl, "cache/".nice_file_name($newurl),$freshness);
+              $activities = make_xml_into_array ($newurl, "/tmp/".nice_file_name($newurl),$freshness);
               if (!$activities) {
                 //echo '<div class="content-column-1">';
                   echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
@@ -198,14 +198,14 @@ if (!isset($_REQUEST["showblank"])) {
           <div id="sidebar">
             <?php
                echo "<div class=\"refreshed\">Data last refreshed: ";
-                         $filetime_cache = filemtime( "cache/" . nice_file_name($newurl) );
+                         $filetime_cache = filemtime( "/tmp/" . nice_file_name($newurl) );
                          if (date("j") == date("j", $filetime_cache)) {
                            $day ="Today at ";
                          } else {
                            $day = "Yesterday at ";
                          }
                          echo $day;
-                         echo date("H:i:s",filemtime( "cache/" . nice_file_name($newurl) )) . "</div>";
+                         echo date("H:i:s",filemtime( "/tmp/" . nice_file_name($newurl) )) . "</div>";
             ?>
             <h3>Options</h3>
             <div class="options">

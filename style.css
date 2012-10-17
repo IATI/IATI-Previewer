@@ -943,7 +943,7 @@ display:block;
 }
 #header a.logo {
 width:463px;
-background:url("img/showmydata_logo.png") no-repeat scroll 320px 0 transparent;
+/*background:url("img/showmydata_logo.png") no-repeat scroll 320px 0 transparent;*/
 }
 select {
 margin:0;

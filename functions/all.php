@@ -20,7 +20,7 @@ function print_list($id, $activity, $prefix,$level=0) {
     if (!$cid) {
       $cid = $activity->{'name'};
     }
-    if ( (isset($_SESSION["actvis"]) && $level==0) || (isset($_SESSION["cvis"]) && $level>0) ) {
+    if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
       $plus_sign = "- ";
     } else {
       $plus_sign = "+";
@@ -48,7 +48,7 @@ function print_list($id, $activity, $prefix,$level=0) {
         //    else $format = "H:i";
         //    echo " <span class=\"time\">(".date($format, strtotime((string)$activity->Starts))." - ".date($format, strtotime((string)$activity->Ends)).")</span> ";
         //}
-        if ( (isset($_SESSION["actvis"]) && $level==0) || (isset($_SESSION["cvis"]) && $level>0) ) {
+        if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
           echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\">";
         } else {
           echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\" style=\"display: none;\">";

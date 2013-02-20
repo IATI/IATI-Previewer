@@ -229,8 +229,8 @@ if (!isset($_REQUEST["showblank"])) {
                     Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
                     Show expanded: 
                     <ul>
-                      <li>Activities<input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
-                      <li>Children (transactions etc.)<input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
+                      <li>Activities <input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
+                      <li>Children (transactions etc.) <input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
                     </ul>
                   </div>
                   <div class="submit"><input type="submit" value="update"/></div>

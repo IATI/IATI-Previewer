@@ -171,6 +171,7 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FAL
        //     'Invalid XML: Detected use of illegal DOCTYPE'
        // );
         //echo "fail";
+      return FALSE;
     } else {
       $oldValue = libxml_disable_entity_loader(true);
       $dom = new DOMDocument();
@@ -178,6 +179,8 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FAL
       $xml = simplexml_import_dom($dom);
       //$xml = simplexml_load_file($cacheFile);
       libxml_disable_entity_loader($oldValue);
+      //***Now we have an array with all the XML data in it.
+      return $xml;
     }
 
 //} else {
@@ -186,9 +189,6 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FAL
 //print_r ($xml);
 //echo $xml;
 
-//***Now we have an array with all the XML data in it.
- 
- return $xml;
 }
 
 function nice_file_name($url) {

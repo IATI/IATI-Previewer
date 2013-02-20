@@ -20,7 +20,7 @@ function print_list($id, $activity, $prefix,$level=0) {
     if (!$cid) {
       $cid = $activity->{'name'};
     }
-    if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
+    if ( (isset($_SESSION["actvis"]) && $level==0) || (isset($_SESSION["cvis"]) && $level>0) ) {
       $plus_sign = "- ";
     } else {
       $plus_sign = "+";
@@ -48,7 +48,7 @@ function print_list($id, $activity, $prefix,$level=0) {
         //    else $format = "H:i";
         //    echo " <span class=\"time\">(".date($format, strtotime((string)$activity->Starts))." - ".date($format, strtotime((string)$activity->Ends)).")</span> ";
         //}
-        if ( ($_SESSION["actvis"] && $level==0) || ($_SESSION["cvis"] && $level>0) ) {
+        if ( (isset($_SESSION["actvis"]) && $level==0) || (isset($_SESSION["cvis"]) && $level>0) ) {
           echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\">";
         } else {
           echo "<ul id=\"$prefix-$id-$i\" class=\"actinfo\" style=\"display: none;\">";
@@ -152,14 +152,39 @@ if ( filemtime( $cacheFile ) < (time()-$seconds) || filemtime($cacheFile) == FAL
 //Start buliding the output
 //Always bulid the page from the cache - fresh data is written to the cache first.
 
-	//$cache = file_get_contents( $cacheFile );
-	//print_r ($xml);
-    //if (filesize($cacheFile)< 20000000000000 ) {
-      $xml = simplexml_load_file($cacheFile);
-    //} else {
-      //$xml = FALSE;
-    //}
-	//print_r ($xml);
+//$cache = file_get_contents( $cacheFile );
+//print_r ($xml);
+//if (filesize($cacheFile)< 20000000000000 ) {
+    
+    $xml = file_get_contents($cacheFile);
+    //echo $xml;
+    /* Some safety against XML Injection attack
+     * see: http://phpsecurity.readthedocs.org/en/latest/Injection-Attacks.html
+     * 
+     * Attempt a quickie detection of DOCTYPE - discard if it is present (cos it shouldn't be!)
+    */
+      
+    $collapsedXML = preg_replace("/[[:space:]]/", '', $xml);
+    //echo $collapsedXML;
+    if(preg_match("/<!DOCTYPE/i", $collapsedXML)) {
+        //throw new InvalidArgumentException(
+       //     'Invalid XML: Detected use of illegal DOCTYPE'
+       // );
+        //echo "fail";
+    } else {
+      $oldValue = libxml_disable_entity_loader(true);
+      $dom = new DOMDocument();
+      $dom->loadXML($xml);
+      $xml = simplexml_import_dom($dom);
+      //$xml = simplexml_load_file($cacheFile);
+      libxml_disable_entity_loader($oldValue);
+    }
+
+//} else {
+  //$xml = FALSE;
+//}
+//print_r ($xml);
+//echo $xml;
 
 //***Now we have an array with all the XML data in it.
  

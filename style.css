@@ -278,7 +278,12 @@ a.rss-header, a.rss-header:visited { background-image: url("img/rss-icon-header.
    	HEADINGS
 	################################## */
 
-#header a.logo	 		{ background: url("img/iati-logo.png") no-repeat scroll left top ; height: 63px; margin: 20px 0 30px 0; width: 263px;}
+#header a.logo	 		{ 
+/*background: url("img/iati-logo.png") no-repeat scroll left top ; */
+height: 63px; 
+margin: 20px 0 30px 0; 
+width: 263px;
+}
 	
 h1			 						{ color:#2C4F87; font-size:25px; letter-spacing:0px; line-height:33px; margin:0 0 20px; text-transform:uppercase;}
 h2 									{ color:#2C4F87; font-size:20px; letter-spacing:0; line-height:30px; margin:0px 0 10px 0; text-transform:uppercase;}

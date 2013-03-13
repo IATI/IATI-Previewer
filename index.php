@@ -152,7 +152,7 @@ if (!isset($_REQUEST["showblank"])) {
               $activities = make_xml_into_array ($newurl, "/tmp/".nice_file_name($newurl),$freshness);
               if (!$activities) {
                 //echo '<div class="content-column-1">';
-                  echo 'Sorry, could not get IATA compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
+                  echo 'Sorry, could not get IATI compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
                   //echo "Failed loading XML\n";        
                   //foreach(libxml_get_errors() as $error) {
                     //echo "\t", $error->message;

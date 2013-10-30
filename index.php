@@ -173,7 +173,7 @@ if (!isset($_REQUEST["showblank"])) {
                 if ($activities) {
                     echo "<ul>";
                        $header = safeurl($newurl);
-                       $header .= "<br/>This file has " .$count. " activities";
+                       $header .= "<br/>This file has " .$count. " activit".(($count>1)?"ies":"y");
                        
                        echo "<li><h3>".$header."</h3>";
                     

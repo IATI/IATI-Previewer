@@ -1,11 +1,15 @@
-==== ShowMyIATIData ==== 
+ShowMyIATIData
+==============
+
 This app makes it easy to browse IATI compliant data.
+
 For more about the International Aid Transparency Initiative (IATI) see:
 http://www.aidtransparency.net/
 
 The app was adapted by David Carpenter <caprenter@gmail.com> and is based on:
 
-==== ShowMyPlings ==== 
+ShowMyPlings
+============
 
 Plings is a project to share data about positive activities for young people in the UK (www.plings.co.uk)
 
@@ -17,16 +21,15 @@ This web application is licensed as free software so that people can take it and
 
 The developer hub for the project can be found at http://www.plings.info/
 
-
-Contact Information
-Plings is project run by Substance, a social research co-operative.
-www.substance.coop
-substance.
-3rd Floor
-Fourways House
-57 Hilton Street
-Manchester
-M1 2EJ
+| Contact Information
+| Plings is project run by Substance, a social research co-operative.
+| www.substance.coop
+| substance.
+| 3rd Floor
+| Fourways House
+| 57 Hilton Street
+| Manchester
+| M1 2EJ
 
 info[at]substance.coop
 david[at]substance.coop

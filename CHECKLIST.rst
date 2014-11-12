@@ -9,7 +9,7 @@ This is ours
 All code should have a lead person identified
 ---------------------------------------------
 
-Ben Webb - `https://github.com/Bjwebb <https://github.com/Bjwebb>`__ 
+David Carpenter - `https://github.com/caprenter <https://github.com/caprenter>`__ 
 
 Our projects/code should be appropriately branded.
 --------------------------------------------------

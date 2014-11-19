@@ -62,7 +62,7 @@ function print_list($id, $activity, $prefix,$level=0) {
             else {
                 if ($_SESSION["showblank"] || $child != "") {
                   if($j&1) { $oddeven = "odd"; } else { $oddeven="even"; } 
-                    echo "<li class=\"" . $oddeven ."\"><div><span class=\"label\">".ucwords($child->getName())."</span>: ";
+                    echo "<li class=\"" . $oddeven ."\"><div><span class=\"iati-label\">".ucwords($child->getName())."</span>: ";
                       if (count($child->attributes())>0) {
                         echo "<span class=\"attribute\"> [";
                           foreach($child->attributes() as $a => $b) {

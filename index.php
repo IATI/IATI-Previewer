@@ -194,6 +194,8 @@ if (!isset($_REQUEST["showblank"])) {
                     echo $day;
                     echo date("H:i:s",filemtime( "/tmp/" . nice_file_name($newurl) )) . "</div>";
                     
+                    echo '<a href="http://validator.iatistandard.org/?url=' . safeurl($newurl) . '" target="_blank">Check this data in the IATI Public Validator</a> [opens in new window]';
+                    
                     echo '</div>';
                     
                     echo "<p>Use the expand (+) and collapse (-) buttons to view and hide the details </p>";
@@ -229,18 +231,12 @@ if (!isset($_REQUEST["showblank"])) {
                   </div>
                 </form>
                 <div class="examples">
-                  <h3>...or use one of the examples below</h3>
-                  World Bank<br>
+                  <h3>...or click on the example below</h3>
+                  IATI Activity Standard Example XML<br>
                   <ul>
-
-                  <li><a href="index.php?url=http://siteresources.worldbank.org/IATI/WB-AF.xml">http://siteresources.worldbank.org/IATI/WB-AF.xml</a></li>
-                  <li><a href="index.php?url=http://siteresources.worldbank.org/IATI/WB-AL.xml">http://siteresources.worldbank.org/IATI/WB-AL.xml</a></li>
-                  </ul>
-                  Department for International Development, UK<br/>
-                  <ul>
-
-                  <li><a href="index.php?url=http://projects.dfid.gov.uk/iati/Region/380">http://projects.dfid.gov.uk/iati/Region/380</a></li>
-                  <li><a href="index.php?url=http://projects.dfid.gov.uk/iati/Country/BD">http://projects.dfid.gov.uk/iati/Country/BD</a></li>
+                    <li><a href="index.php?url=https://raw.githubusercontent.com/IATI/IATI-Extra-Documentation/version-1.05/en/activity-standard/activity-standard-example-annotated.xml
+">IATI Activity Standard (version 1.05) Example XML</a>
+                    </li>
                   </ul>
                 </div>
               </div>

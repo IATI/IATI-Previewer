@@ -232,7 +232,7 @@ if (!isset($_REQUEST["showblank"])) {
                 </form>
                 <div class="examples">
                   <h3>...or click on the example below</h3>
-                  IATI Activity Standard Example XML<br>
+                  
                   <ul>
                     <li><a href="index.php?url=https://raw.githubusercontent.com/IATI/IATI-Extra-Documentation/version-1.05/en/activity-standard/activity-standard-example-annotated.xml
 ">IATI Activity Standard (version 1.05) Example XML</a>

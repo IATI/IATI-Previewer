@@ -56,3 +56,8 @@ padding-left: 20px;
 footer li {
 list-style-type: disc;
 }
+
+#footer-cookie {
+border-top: 2px folis #fff;
+margin-top:10px;
+}

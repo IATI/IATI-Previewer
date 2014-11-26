@@ -335,15 +335,18 @@ if (!isset($_REQUEST["showblank"])) {
           <li><a href="http://support.iatistandard.org/">IATI Community</a></li>
         </ul>
       </div>
-      <div id="footer-cookie">
+    </div>
+    <div id="footer-cookie">
+      <div class="container">
         <aside id="text-21" class="widget-1 widget-first widget-last widget-odd widget widget_text">
           <h3 class="widget-title">Cookie Disclaimer</h3>			
           <div class="textwidget">
             <p>Cookies are small text files that are stored by the browser (e.g. Internet Explorer, Chrome, Firefox) on your computer or mobile phone. This site uses anonymous Analytics cookies which allow us to track how many unique individual users we have, and how often they visit the site. Unless a user signs in, these cookies cannot be used to identify an individual; they are used for statistical purposes only. If you are logged in, we will also know the details you gave to us for this, such as username and email address. By continuing to use this site, you are agreeing to the use of cookies.</p>
           </div>
-        </aside>        
-      </div>
+        </aside> 
+      </div>      
     </div>
+
   </footer>
 
 </body>

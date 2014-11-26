@@ -81,11 +81,11 @@ if (!isset($_REQUEST["showblank"])) {
               <input name="h" value="" placeholder="Search">
             </div>
               <div class="form-group">
-              <input type="button" value="Remove" onclick="unhighlight(document.getElementsByTagName('body')[0]); 
-                                                                      document.searchhi.reset(); document.searchhi.h.focus();">
+                <input type="button" value="Highlight" onclick="localSearchHighlight(document.searchhi.h.value); document.searchhi.h.focus();">
               </div>
               <div class="form-group">
-              <input type="button" value="Highlight" onclick="localSearchHighlight(document.searchhi.h.value); document.searchhi.h.focus();">
+              <input type="button" value="Remove" onclick="unhighlight(document.getElementsByTagName('body')[0]); 
+                                                                      document.searchhi.reset(); document.searchhi.h.focus();">
               </div>
             </div>
           </form>
@@ -161,7 +161,7 @@ if (!isset($_REQUEST["showblank"])) {
             if ($url) {
                 $newurl = $url;
                 $_SESSION["url"] = $newurl;
-            
+                
                 libxml_use_internal_errors(true); //suppress and save errors
                 $activities = make_xml_into_array ($newurl, "/tmp/".nice_file_name($newurl),$freshness);
                 if (!$activities) {
@@ -284,6 +284,20 @@ if (!isset($_REQUEST["showblank"])) {
                     </form>
                   </div>
                 </div>
+                
+                <form method="get" action="index.php">
+                  <div class="form-group">
+                    <label for="url">Preview a different IATI file</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="url" name="url" aria-describedby="helpBlock" placeholder="http://">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Submit</button>
+                      </span>
+                     </div><!-- /input-group -->
+                      <span id="helpBlock" class="help-block">Enter the web address of an IATI compliant XML file.</span>
+                  </div>
+                </form>
+                
                   <?php //End if (url) second time
                     } 
                   ?>

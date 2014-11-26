@@ -219,7 +219,7 @@ if (!isset($_REQUEST["showblank"])) {
               ?>
               <div class="content-column-1">
                 <h2>Fetch IATI Data</h2>
-                <form method="post" action="index.php">
+                <form method="get" action="index.php">
                   <div class="form-group">
                     <label for="url">Please enter the web address of an IATI compliant XML file.</label>
                     <div class="input-group">

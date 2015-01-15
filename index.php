@@ -331,7 +331,7 @@ if (!isset($_REQUEST["showblank"])) {
         <ul>
           <li><a href="http://www.aidtransparency.net/">Aid Transparency</a></li>
           <li><a href="http://www.iatistandard.org/">IATI Standard</a></li>
-          <li><a href="http://www.iatiregistry.org/">IATI Registry/Data</a></li>
+          <li><a href="http://www.iatiregistry.org/">IATI Data</a></li>
           <li><a href="http://support.iatistandard.org/">IATI Community</a></li>
         </ul>
       </div>

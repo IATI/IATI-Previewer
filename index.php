@@ -5,7 +5,7 @@
 # Adapted by (c) 2011 David Carpenter <caprenter@gmail.com>
 # All changes released as free software under the MIT license,
 # see the LICENSE file for details.
-error_reporting(0);
+error_reporting(1);
 $i =0;
 
 include "functions/sort.php";
@@ -147,10 +147,19 @@ if (!isset($_REQUEST["showblank"])) {
             }
             
             if (isset($_REQUEST["url"]) && $_REQUEST["url"]) {
-              $url = htmlentities($_REQUEST["url"]);
+              $url = filter_var($_REQUEST["url"], FILTER_SANITIZE_URL);
+              if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                $url = $_SESSION["url"];
+              }
+
             } else {
               //if (isset($_SESSION["url"])) {
-               $url = htmlentities($_SESSION["url"]);
+                if (filter_var($_SESSION["url"], FILTER_VALIDATE_URL)) {
+                   $url = $_SESSION["url"];
+                 } else {
+                   $url = "";
+                 }
+                 
               //} else {
                // $url = "";
                // $_SESSION["url"] = "";
@@ -161,9 +170,28 @@ if (!isset($_REQUEST["showblank"])) {
             if ($url) {
                 $newurl = $url;
                 $_SESSION["url"] = $newurl;
+                //echo $newurl;
                 
                 libxml_use_internal_errors(true); //suppress and save errors
                 $activities = make_xml_into_array ($newurl, "/tmp/".nice_file_name($newurl),$freshness);
+                
+                /*
+                 * To cope with data directly from the datastore which curerntly has this XML format
+                 * <result xmlns:iati-extra="http://datastore.iatistandard.org/ns">
+                 * <ok>True</ok>
+                 *   <iati-activities generated-datetime="2015-01-22T13:33:38.754721">
+                 *     <query>
+                 *       <total-count>1</total-count>
+                 *       <start>0</start>
+                 *       <limit>50</limit>
+                 *     </query>
+                 *     <iati-activity
+                 * 
+                 * a simple fix is to check $activities to see if it contains iati-activities
+                 * If it does we have one less activity to report on (as query is not an activity)
+                 * and we need to parse the data slightly differntly
+                 */
+
                 if (!$activities) {
                   echo 'Sorry, could not get IATI compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
                   //echo "Failed loading XML\n";        
@@ -173,13 +201,19 @@ if (!isset($_REQUEST["showblank"])) {
                 } else {
                   //$count = $xml->count(); //php >5.3
                   $count = count($activities->children()); //php < 5.3
+                  if (isset($activities->{'iati-activities'})) { //Check for datastore data
+                    $count = count($activities->xpath('//iati-activity')); 
+                  }
                   if ($_SESSION["sort"]) {
                       $activities = sort_plings_xml($activities,$_SESSION["sort"],$_SESSION["sort_order"]);
                   }
                   if ($activities) {
                     //URL header
-                    $header = '<strong>' . safeurl($newurl) . '</strong>';
+                    $header = '<strong>' . htmlentities(safeurl($newurl)) . '</strong>';
                     $header .= "<br>This file has " .$count. " activit".(($count>1)?"ies":"y");
+                    if (isset($activities->{'iati-activities'})) { //Check for datastore data
+                        $header .= "<br>This is slightly modified view of raw data from the datastore";
+                    }
                     //echo "<li><h3>".$header."</h3>";
                     echo '<div class="bg-info url">' . $header;
                     
@@ -194,7 +228,10 @@ if (!isset($_REQUEST["showblank"])) {
                     echo $day;
                     echo date("H:i:s",filemtime( "/tmp/" . nice_file_name($newurl) )) . "</div>";
                     
-                    echo '<a href="http://validator.iatistandard.org/?url=' . safeurl($newurl) . '" target="_blank">Check this data in the IATI Public Validator</a> [opens in new window]';
+                    //Show link to validator
+                    if (!isset($activities->{'iati-activities'})) { //!!Datastore data does not validate!!
+                      echo '<a href="http://validator.iatistandard.org/?url=' . htmlentities(safeurl($newurl)) . '" target="_blank">Check this data in the IATI Public Validator</a> [opens in new window]';
+                    }
                     
                     echo '</div>';
                     
@@ -203,11 +240,21 @@ if (!isset($_REQUEST["showblank"])) {
                     echo "<ul class=\"actinfo\">";
                     
                     $i = 0;
-                    foreach($activities as $activity) {
-                      //print_r($activity);
-                      $id = $activity->{'iati-identifier'};
-                      print_list($id, $activity, "actinfo");
-                      $i++;
+                    
+                    if (isset($activities->{'iati-activities'})) { //If this is datastore data, then we need to loop through this way
+                      foreach($activities->xpath('//iati-activity') as $activity) {
+                        //print_r($activity);
+                        $id = $activity->{'iati-identifier'};
+                        print_list($id, $activity, "actinfo");
+                        $i++;
+                      }
+                    } else {
+                      foreach($activities as $activity) { //Standard IATI data can be looped this way
+                        //print_r($activity);
+                        $id = $activity->{'iati-identifier'};
+                        print_list($id, $activity, "actinfo");
+                        $i++;
+                      }
                     }
                     echo "</ul></ul>";
                     #echo $i;

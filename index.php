@@ -5,7 +5,7 @@
 # Adapted by (c) 2011 David Carpenter <caprenter@gmail.com>
 # All changes released as free software under the MIT license,
 # see the LICENSE file for details.
-error_reporting(1);
+error_reporting(0);
 $i =0;
 
 include "functions/sort.php";

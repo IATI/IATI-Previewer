@@ -1,5 +1,11 @@
 IATI-Previewer
-==============
+^^^^^^^^^^^^^^
+
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://github.com/IATI/IATI-Previewer/blob/master/LICENSE
+
+Introduction
+============
 
 This application makes it easy to browse IATI compliant data.
 

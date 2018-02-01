@@ -29,7 +29,7 @@ Purpose: Removes some of the original URL characters to create a tidier filename
 # index.php
 
  - [x] Create minimal Flask app
- - [ ] Strip templating from php
+ - [x] Strip templating from php
  - [ ] Remove references to ShowMy Plings app
  - [ ] Update example file to at least v2.02
  - [ ] Create front-end that mimics look of current PHP code

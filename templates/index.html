@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>IATI Previewer</title>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css" type="text/css" >
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!--Thanks to http://www.randomsnippets.com/2008/02/12/how-to-hide-and-show-your-div/-->
+    <script type="text/javascript">
+      function toggle2(showHide, switchText) {
+        var ele = document.getElementById(showHide);
+        var text = document.getElementById(switchText);
+        if(ele.style.display == "") {
+              ele.style.display = "none";
+          text.innerHTML = "+";
+          }
+        else {
+          ele.style.display = "";
+          text.innerHTML = "- ";
+        }
+      }
+    </script>
+
+    <style type="text/css"><!--
+      SPAN.searchword { background-color:yellow; }
+      // -->
+    </style>
+    <!--<script src="http://links.tedpavlic.com/js/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>-->
+   <script src="javascript/searchhi_slim.js" type="text/javascript"></script>
+  </head>
+
+  <body onload="highlightSearchTerms('search');">
+
+    <div id="wrap">
+
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <!-- logo -->
+            <!--<img src=".png" style="float:left" />-->
+            <!--<a class="navbar-brand" href="index.php">Home</a>-->
+            <a class="navbar-brand" href="?action=new" title="New Url">Home</a>
+            <a class="navbar-brand" href="?action=refresh" title="Refresh">Refresh</a>
+          </div>
+          <form class="navbar-form navbar-right" role="form" id="searchform" name="searchhi" action="" onsubmit="localSearchHighlight(document.searchhi.h.value);
+                                                              document.searchhi.reset(); document.searchhi.h.focus(); return false;">
+            <div class="form-group">
+              <input name="h" value="" placeholder="Search">
+            </div>
+              <div class="form-group">
+                <input type="button" value="Highlight" onclick="localSearchHighlight(document.searchhi.h.value); document.searchhi.h.focus();">
+              </div>
+              <div class="form-group">
+              <input type="button" value="Remove" onclick="unhighlight(document.getElementsByTagName('body')[0]);
+                                                                      document.searchhi.reset(); document.searchhi.h.focus();">
+              </div>
+            </div>
+          </form>
+
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+
+            </ul>
+          </div><!--/.nav-collapse -->
+
+        </div><!-- end container -->
+      </div><!-- end navigation -->
+
+      <div class="container page-header">
+        <div class="row">
+          <div class="col-md-2">
+            <img id="logo" width="192" height="50" src="http://validator.iatistandard.org/assets/img/logo.png">
+          </div>
+
+          <div class="col-md-10">
+            <h1>IATI Previewer</h1>
+          </div>
+        </div>
+      </div><!-- /.container -->
+
+    </div><!-- end wrap -->
+
+
+    <div id="main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+
+            ?>
+            </div><!-- col-md-7 -->
+
+
+            <div class="col-md-4 col-md-offset-1">
+              <div id="sidebar">
+              /*PHP code was here*/
+                <div class="panel panel-default">
+                  <div class="panel-heading">Options</div>
+                  <div class="panel-body">
+                    <form method="post" action="?action=update">
+                      <div class="sort">
+                        Sort by:
+                        <select name="sort">
+                        <?php
+                          foreach ($sortopts as $key=>$field) {
+                            echo "<option value=\"$key\"";
+                            if ($_SESSION["sort"] == $key) {
+                              echo " selected ";
+                            }
+                            echo ">$field</option>";
+                          }
+                        ?>
+                        </select>
+                        <br>
+                        Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
+                      </div><!-- sort -->
+                      <div class="show">
+                        <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
+                        Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
+                        Show expanded:
+                        <ul>
+                          <li>Activities <input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
+                          <li>Children (transactions etc.) <input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
+                        </ul>
+                      </div>
+                      <div class="submit"><input type="submit" value="update"/></div>
+                    </form>
+                  </div>
+                </div>
+
+                <form method="get" action="index.php">
+                  <div class="form-group">
+                    <label for="url">Preview a different IATI file</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="url" name="url" aria-describedby="helpBlock" placeholder="http://">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Submit</button>
+                      </span>
+                     </div><!-- /input-group -->
+                      <span id="helpBlock" class="help-block">Enter the web address of an IATI compliant XML file.</span>
+                  </div>
+                </form>
+
+                  <?php //End if (url) second time
+                    }
+                  ?>
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <p>IATI Previewer allows you to browse a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.</p>
+                    <p>The preview function allows you to view the data in the way it was published, without analysing or changing the raw data.</p>
+                    <p>You can find out about other tools for accessing IATI-compliant data from a range of sources on the <a href="http://iatiregistry.org/using-iati-data">using IATI data page of the IATI Registry</a>.</p>
+                    <p>Note: This tool cannot open very large files.</p>
+                  </div>
+                </div>
+
+              </div><!--endSidebar-->
+            </div><!-- col-md-4 -->
+
+        </div><!-- row -->
+      </div><!--container-->
+    </div><!--main-->
+
+
+  <footer class="footer">
+    <div class="container">
+      <p class="pull-right"><a href="#">Back to top</a></p>
+      <p>IATI Previewer is free software. <br/>Source on <a href="https://github.com/IATI/IATI-Previewer/">GitHub</a>. <a href="https://github.com/IATI/IATI-Previewer/issues?state=open">Submit issues</a>.</p>
+      <p>
+        Built with <a href="http://twitter.github.com/bootstrap">Bootstrap</a> Bootstrap is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.<br/>
+        Icons from <a href="http://glyphicons.com">Glyphicons Free</a>, licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+      </p>
+      <div id="iati-links">
+        <h4>IATI Links</h4>
+        <ul>
+          <li><a href="http://www.aidtransparency.net/">Aid Transparency</a></li>
+          <li><a href="http://www.iatistandard.org/">IATI Standard</a></li>
+          <li><a href="http://www.iatiregistry.org/">IATI Data</a></li>
+          <li><a href="http://support.iatistandard.org/">IATI Community</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="footer-cookie">
+      <div class="container">
+        <aside id="text-21" class="widget-1 widget-first widget-last widget-odd widget widget_text">
+          <h3 class="widget-title">Cookie Disclaimer</h3>
+          <div class="textwidget">
+            <p>Cookies are small text files that are stored by the browser (e.g. Internet Explorer, Chrome, Firefox) on your computer or mobile phone. This site uses anonymous Analytics cookies which allow us to track how many unique individual users we have, and how often they visit the site. Unless a user signs in, these cookies cannot be used to identify an individual; they are used for statistical purposes only. If you are logged in, we will also know the details you gave to us for this, such as username and email address. By continuing to use this site, you are agreeing to the use of cookies.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+  </footer>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110230511-6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-110230511-6');
+</script>
+
+</body>
+</html>

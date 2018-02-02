@@ -94,15 +94,34 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            /*PHP went here*/
+              <div class="content-column-1">
+                <h2>Fetch IATI Data</h2>
+                <form method="get" action="index.php">
+                  <div class="form-group">
+                    <label for="url">Please enter the web address of an IATI compliant XML file.</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="url" name="url" aria-describedby="helpBlock" placeholder="http://">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Submit</button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div>
+                </form>
+                <div class="examples">
+                  <h3>...or click on the example below</h3>
+
+                  <ul>
+                    <li><a href="index.php?url=https://raw.githubusercontent.com/IATI/IATI-Extra-Documentation/version-1.05/en/activity-standard/activity-standard-example-annotated.xml
+">IATI Activity Standard (version 1.05) Example XML</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div><!-- col-md-7 -->
 
 
             <div class="col-md-4 col-md-offset-1">
               <div id="sidebar">
-                <?php
-                 if ($url) {
-                ?>
                 <div class="panel panel-default">
                   <div class="panel-heading">Options</div>
                   <div class="panel-body">
@@ -110,26 +129,17 @@
                       <div class="sort">
                         Sort by:
                         <select name="sort">
-                        <?php
-                          foreach ($sortopts as $key=>$field) {
-                            echo "<option value=\"$key\"";
-                            if ($_SESSION["sort"] == $key) {
-                              echo " selected ";
-                            }
-                            echo ">$field</option>";
-                          }
-                        ?>
                         </select>
                         <br>
-                        Reverse Sort <input type="checkbox" name="sort_order" <?php if ($_SESSION["sort_order"] == "desc") echo "checked"; ?>>
+                        Reverse Sort <input type="checkbox" name="sort_order">
                       </div><!-- sort -->
                       <div class="show">
-                        <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
-                        Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
+                        <!--Show times: <input type="checkbox" name="times"> |-->
+                        Show blank fields: <input type="checkbox" name="showblank" /> <br/><br/>
                         Show expanded:
                         <ul>
-                          <li>Activities <input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
-                          <li>Children (transactions etc.) <input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
+                          <li>Activities <input type="checkbox" name="actvis" /> </li>
+                          <li>Children (transactions etc.) <input type="checkbox" name="cvis" /></li>
                         </ul>
                       </div>
                       <div class="submit"><input type="submit" value="update"/></div>
@@ -150,9 +160,6 @@
                   </div>
                 </form>
 
-                  <?php //End if (url) second time
-                    }
-                  ?>
                 <div class="panel panel-default">
                   <div class="panel-body">
                     <p>IATI Previewer allows you to browse a single raw data file published using the <a href="http://iatistandard.org/">IATI XML standard</a>.</p>

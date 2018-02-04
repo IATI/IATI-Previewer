@@ -234,8 +234,8 @@ if (!isset($_REQUEST["showblank"])) {
                   <h3>...or click on the example below</h3>
                   
                   <ul>
-                    <li><a href="index.php?url=https://raw.githubusercontent.com/IATI/IATI-Extra-Documentation/version-1.05/en/activity-standard/activity-standard-example-annotated.xml
-">IATI Activity Standard (version 1.05) Example XML</a>
+                    <li><a href="index.php?url=https://raw.githubusercontent.com/IATI/IATI-Extra-Documentation/version-2.02/en/activity-standard/activity-standard-example-annotated.xml
+">IATI Activity Standard (version 2.02) Example XML</a>
                     </li>
                   </ul>
                 </div>

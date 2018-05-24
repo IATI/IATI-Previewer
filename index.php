@@ -24,7 +24,7 @@ if (!isset($_REQUEST["showblank"])) {
 
 <!DOCTYPE html>
 <html lang="en">
-  
+
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>IATI Previewer</title>
@@ -47,19 +47,19 @@ if (!isset($_REQUEST["showblank"])) {
         }
       }
     </script>
-  
-    <style type="text/css"><!-- 
+
+    <style type="text/css"><!--
       SPAN.searchword { background-color:yellow; }
       // -->
     </style>
     <!--<script src="http://links.tedpavlic.com/js/searchhi_slim.js" type="text/javascript" language="JavaScript"></script>-->
    <script src="javascript/searchhi_slim.js" type="text/javascript"></script>
   </head>
-  
+
   <body onload="highlightSearchTerms('search');">
-  
+
     <div id="wrap">
-      
+
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -75,7 +75,7 @@ if (!isset($_REQUEST["showblank"])) {
             <a class="navbar-brand" href="?action=new" title="New Url">Home</a>
             <a class="navbar-brand" href="?action=refresh" title="Refresh">Refresh</a>
           </div>
-          <form class="navbar-form navbar-right" role="form" id="searchform" name="searchhi" action="" onsubmit="localSearchHighlight(document.searchhi.h.value); 
+          <form class="navbar-form navbar-right" role="form" id="searchform" name="searchhi" action="" onsubmit="localSearchHighlight(document.searchhi.h.value);
                                                               document.searchhi.reset(); document.searchhi.h.focus(); return false;">
             <div class="form-group">
               <input name="h" value="" placeholder="Search">
@@ -84,18 +84,18 @@ if (!isset($_REQUEST["showblank"])) {
                 <input type="button" value="Highlight" onclick="localSearchHighlight(document.searchhi.h.value); document.searchhi.h.focus();">
               </div>
               <div class="form-group">
-              <input type="button" value="Remove" onclick="unhighlight(document.getElementsByTagName('body')[0]); 
+              <input type="button" value="Remove" onclick="unhighlight(document.getElementsByTagName('body')[0]);
                                                                       document.searchhi.reset(); document.searchhi.h.focus();">
               </div>
             </div>
           </form>
-          
+
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
 
             </ul>
           </div><!--/.nav-collapse -->
-          
+
         </div><!-- end container -->
       </div><!-- end navigation -->
 
@@ -110,9 +110,9 @@ if (!isset($_REQUEST["showblank"])) {
           </div>
         </div>
       </div><!-- /.container -->
-    
+
     </div><!-- end wrap -->
-  
+
 
     <div id="main">
       <div class="container">
@@ -125,7 +125,7 @@ if (!isset($_REQUEST["showblank"])) {
                 $_SESSION["apikey"] = "";
                 $_SESSION["showblank"] = TRUE;
             }  elseif (isset($_GET["action"]) && $_GET["action"] == "update") {
-                
+
                if (in_array($_REQUEST["sort"], $sort_terms)) {
                     $_SESSION["sort"] = $_REQUEST["sort"];
                     if (isset($_REQUEST["sort_order"]) && $_REQUEST["sort_order"] == "on") {
@@ -145,7 +145,7 @@ if (!isset($_REQUEST["showblank"])) {
               $freshness = 1/60; //we refrech the cache
               //echo $freshness;
             }
-            
+
             if (isset($_REQUEST["url"]) && $_REQUEST["url"]) {
               $url = htmlentities($_REQUEST["url"]);
             } else {
@@ -156,17 +156,17 @@ if (!isset($_REQUEST["showblank"])) {
                // $_SESSION["url"] = "";
               //}
             }
-            
+
             /*Parse and display the XML */
             if ($url) {
                 $newurl = $url;
                 $_SESSION["url"] = $newurl;
-                
+
                 libxml_use_internal_errors(true); //suppress and save errors
                 $activities = make_xml_into_array ($newurl, "/tmp/".nice_file_name($newurl),$freshness);
                 if (!$activities) {
                   echo 'Sorry, could not get IATI compliant data from the supplied file!<br/>Please <a href="?action=new" title="New Url">try again</a>.<br/>';
-                  //echo "Failed loading XML\n";        
+                  //echo "Failed loading XML\n";
                   //foreach(libxml_get_errors() as $error) {
                     //echo "\t", $error->message;
                   //}
@@ -182,7 +182,7 @@ if (!isset($_REQUEST["showblank"])) {
                     $header .= "<br>This file has " .$count. " activit".(($count>1)?"ies":"y");
                     //echo "<li><h3>".$header."</h3>";
                     echo '<div class="bg-info url">' . $header;
-                    
+
                     //Last Refreshed info
                     echo "<div class=\"refreshed\">Data last refreshed: ";
                     $filetime_cache = filemtime( "/tmp/" . nice_file_name($newurl) );
@@ -193,15 +193,15 @@ if (!isset($_REQUEST["showblank"])) {
                     }
                     echo $day;
                     echo date("H:i:s",filemtime( "/tmp/" . nice_file_name($newurl) )) . "</div>";
-                    
+
                     echo '<a href="http://validator.iatistandard.org/?url=' . safeurl($newurl) . '" target="_blank">Check this data in the IATI Public Validator</a> [opens in new window]';
-                    
+
                     echo '</div>';
-                    
+
                     echo "<p>Use the expand (+) and collapse (-) buttons to view and hide the details </p>";
                     //echo "</li><ul class=\"actinfo\">";
                     echo "<ul class=\"actinfo\">";
-                    
+
                     $i = 0;
                     foreach($activities as $activity) {
                       //print_r($activity);
@@ -214,7 +214,7 @@ if (!isset($_REQUEST["showblank"])) {
                   } else {
                       echo 'Sorry, no activities were found in this file!<br/>Please <a href="?action=new" title="New Url">try again</a>';
                   }
-                } 
+                }
               } else { //There is no URL to use so diplay the default home page
               ?>
               <div class="content-column-1">
@@ -232,7 +232,7 @@ if (!isset($_REQUEST["showblank"])) {
                 </form>
                 <div class="examples">
                   <h3>...or click on the example below</h3>
-                  
+
                   <ul>
                     <li><a href="index.php?url=https://raw.githubusercontent.com/IATI/IATI-Extra-Documentation/version-1.05/en/activity-standard/activity-standard-example-annotated.xml
 ">IATI Activity Standard (version 1.05) Example XML</a>
@@ -241,20 +241,20 @@ if (!isset($_REQUEST["showblank"])) {
                 </div>
               </div>
             <?php //End if (url) first time
-              } 
+              }
             ?>
             </div><!-- col-md-7 -->
 
-            
+
             <div class="col-md-4 col-md-offset-1">
               <div id="sidebar">
-                <?php 
+                <?php
                  if ($url) {
                 ?>
                 <div class="panel panel-default">
                   <div class="panel-heading">Options</div>
                   <div class="panel-body">
-                    <form method="post" action="?action=update">            
+                    <form method="post" action="?action=update">
                       <div class="sort">
                         Sort by:
                         <select name="sort">
@@ -274,7 +274,7 @@ if (!isset($_REQUEST["showblank"])) {
                       <div class="show">
                         <!--Show times: <input type="checkbox" name="times" <?php if ($_SESSION["times"] !== false) echo "checked"; ?>> |-->
                         Show blank fields: <input type="checkbox" name="showblank" <?php checho("showblank"); ?> /> <br/><br/>
-                        Show expanded: 
+                        Show expanded:
                         <ul>
                           <li>Activities <input type="checkbox" name="actvis" <?php checho("actvis"); ?> /> </li>
                           <li>Children (transactions etc.) <input type="checkbox" name="cvis" <?php checho("cvis"); ?> /></li>
@@ -284,7 +284,7 @@ if (!isset($_REQUEST["showblank"])) {
                     </form>
                   </div>
                 </div>
-                
+
                 <form method="get" action="index.php">
                   <div class="form-group">
                     <label for="url">Preview a different IATI file</label>
@@ -297,9 +297,9 @@ if (!isset($_REQUEST["showblank"])) {
                       <span id="helpBlock" class="help-block">Enter the web address of an IATI compliant XML file.</span>
                   </div>
                 </form>
-                
+
                   <?php //End if (url) second time
-                    } 
+                    }
                   ?>
                 <div class="panel panel-default">
                   <div class="panel-body">
@@ -309,15 +309,15 @@ if (!isset($_REQUEST["showblank"])) {
                     <p>Note: This tool cannot open very large files.</p>
                   </div>
                 </div>
-                
+
               </div><!--endSidebar-->
             </div><!-- col-md-4 -->
-           
+
         </div><!-- row -->
       </div><!--container-->
     </div><!--main-->
-      
-      
+
+
   <footer class="footer">
     <div class="container">
       <p class="pull-right"><a href="#">Back to top</a></p>
@@ -333,18 +333,19 @@ if (!isset($_REQUEST["showblank"])) {
           <li><a href="http://www.iatistandard.org/">IATI Standard</a></li>
           <li><a href="http://www.iatiregistry.org/">IATI Data</a></li>
           <li><a href="http://support.iatistandard.org/">IATI Community</a></li>
+          <li><a href="https://www.aidtransparency.net/privacy-policy">Privacy policy</a></li>
         </ul>
       </div>
     </div>
     <div id="footer-cookie">
       <div class="container">
         <aside id="text-21" class="widget-1 widget-first widget-last widget-odd widget widget_text">
-          <h3 class="widget-title">Cookie Disclaimer</h3>			
+          <h3 class="widget-title">Cookie Disclaimer</h3>
           <div class="textwidget">
             <p>Cookies are small text files that are stored by the browser (e.g. Internet Explorer, Chrome, Firefox) on your computer or mobile phone. This site uses anonymous Analytics cookies which allow us to track how many unique individual users we have, and how often they visit the site. Unless a user signs in, these cookies cannot be used to identify an individual; they are used for statistical purposes only. If you are logged in, we will also know the details you gave to us for this, such as username and email address. By continuing to use this site, you are agreeing to the use of cookies.</p>
           </div>
-        </aside> 
-      </div>      
+        </aside>
+      </div>
     </div>
 
   </footer>
@@ -356,8 +357,8 @@ if (!isset($_REQUEST["showblank"])) {
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-110230511-6');
+  gtag('config', 'UA-110230511-6', {'anonymize_ip': true});
 </script>
- 
+
 </body>
 </html>

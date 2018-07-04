@@ -102,7 +102,7 @@ if (!isset($_REQUEST["showblank"])) {
       <div class="container page-header">
         <div class="row">
           <div class="col-md-2">
-            <img id="logo" width="192" height="50" src="http://validator.iatistandard.org/assets/img/logo.png">
+            <img id="logo" width="192" height="50" src="http://styles.iatistandard.org/assets/svg/source/logo-colour.svg">
           </div>
 
           <div class="col-md-10">

@@ -194,7 +194,7 @@ if (!isset($_REQUEST["showblank"])) {
                     echo $day;
                     echo date("H:i:s",filemtime( "/tmp/" . nice_file_name($newurl) )) . "</div>";
 
-                    echo '<a href="http://validator.iatistandard.org/?url=' . safeurl($newurl) . '" target="_blank">Check this data in the IATI Public Validator</a> [opens in new window]';
+                    echo '<a href="https://iativalidator.iatistandard.org/organisations" target="_blank">Check this data in the IATI Validator</a> [opens in new window]';
 
                     echo '</div>';
 

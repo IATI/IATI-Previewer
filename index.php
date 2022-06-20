@@ -112,8 +112,7 @@ if (!isset($_REQUEST["showblank"])) {
       </div><!-- /.container -->
       <div class="container">
         <div class="row">
-          <div class="alert alert-warning"><strong>Notice:</strong> IATI Previewer is deprecated and will be removed 16 Dec 2202. <a href="https://cdn.iatistandard.org/prod-iati-website/documents/IATI_Previewer_Deprecation_Guide.pdf">Announcement</a></div>
-          
+          <div class="alert alert-warning"><strong>Notice:</strong> IATI Previewer is deprecated and will be removed 16 Dec 2202. <a href="https://cdn.iatistandard.org/prod-iati-website/documents/IATI_Previewer_Deprecation_Guide.pdf">Information on using alternative IATI tools</a></div>      
         </div>
       </div>
 

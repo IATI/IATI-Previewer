@@ -110,6 +110,11 @@ if (!isset($_REQUEST["showblank"])) {
           </div>
         </div>
       </div><!-- /.container -->
+      <div class="container">
+        <div class="row">
+          <div class="alert alert-warning"><strong>Notice:</strong> IATI Previewer is deprecated and will be removed 16 Dec 2022. <a href="https://cdn.iatistandard.org/prod-iati-website/documents/IATI_Previewer_Deprecation_Guide.pdf">Information on using alternative IATI tools</a></div>      
+        </div>
+      </div>
 
     </div><!-- end wrap -->
 
@@ -194,7 +199,7 @@ if (!isset($_REQUEST["showblank"])) {
                     echo $day;
                     echo date("H:i:s",filemtime( "/tmp/" . nice_file_name($newurl) )) . "</div>";
 
-                    echo '<a href="http://validator.iatistandard.org/?url=' . safeurl($newurl) . '" target="_blank">Check this data in the IATI Public Validator</a> [opens in new window]';
+                    echo '<a href="https://iativalidator.iatistandard.org/organisations" target="_blank">Check this data in the IATI Validator</a> [opens in new window]';
 
                     echo '</div>';
 

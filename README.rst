@@ -1,5 +1,10 @@
-IATI-Previewer
-^^^^^^^^^^^^^^
+(ARCHIVED) IATI-Previewer
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The IATI-Previewer has been deprecated and removed as one of IATI's core services. Therefore this repo has been Archived.
+
+- `Announcement <https://iatistandard.org/en/news/removal-of-iati-previewer-and-csv-conversion-tool/>`__
+- `IATI_Previewer_Deprecation_Guide.pdf <https://cdn.iatistandard.org/prod-iati-website/documents/IATI_Previewer_Deprecation_Guide.pdf>`__
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: https://github.com/IATI/IATI-Previewer/blob/master/LICENSE
